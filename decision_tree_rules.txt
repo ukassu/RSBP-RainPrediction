@@ -1,0 +1,94 @@
+|--- humidity_f_Poor <= 0.50
+|   |--- windspeed_f_High <= 0.50
+|   |   |--- pressure_f_Poor <= 0.50
+|   |   |   |--- humidity_f_Medium <= 0.50
+|   |   |   |   |--- pressure_f_High <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- pressure_f_High >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |--- humidity_f_Medium >  0.50
+|   |   |   |   |--- pressure_f_Medium <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- pressure_f_Medium >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |--- pressure_f_Poor >  0.50
+|   |   |   |--- dewpoint_f_Poor <= 0.50
+|   |   |   |   |--- temparature_f_High <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- temparature_f_High >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |--- dewpoint_f_Poor >  0.50
+|   |   |   |   |--- temparature_f_Poor <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- temparature_f_Poor >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |--- windspeed_f_High >  0.50
+|   |   |--- humidity_f_Low <= 0.50
+|   |   |   |--- temparature_f_Low <= 0.50
+|   |   |   |   |--- dewpoint_f_Poor <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- dewpoint_f_Poor >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |--- temparature_f_Low >  0.50
+|   |   |   |   |--- pressure_f_Medium <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- pressure_f_Medium >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |--- humidity_f_Low >  0.50
+|   |   |   |--- pressure_f_Poor <= 0.50
+|   |   |   |   |--- temparature_f_Poor <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- temparature_f_Poor >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |--- pressure_f_Poor >  0.50
+|   |   |   |   |--- temparature_f_Medium <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- temparature_f_Medium >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|--- humidity_f_Poor >  0.50
+|   |--- windspeed_f_High <= 0.50
+|   |   |--- temparature_f_High <= 0.50
+|   |   |   |--- pressure_f_Poor <= 0.50
+|   |   |   |   |--- temparature_f_Low <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- temparature_f_Low >  0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |--- pressure_f_Poor >  0.50
+|   |   |   |   |--- dewpoint_f_Medium <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- dewpoint_f_Medium >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |--- temparature_f_High >  0.50
+|   |   |   |--- dewpoint_f_Medium <= 0.50
+|   |   |   |   |--- dewpoint_f_Poor <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- dewpoint_f_Poor >  0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |--- dewpoint_f_Medium >  0.50
+|   |   |   |   |--- windspeed_f_Medium <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- windspeed_f_Medium >  0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |--- windspeed_f_High >  0.50
+|   |   |--- dewpoint_f_Poor <= 0.50
+|   |   |   |--- temparature_f_High <= 0.50
+|   |   |   |   |--- temparature_f_Medium <= 0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |   |--- temparature_f_Medium >  0.50
+|   |   |   |   |   |--- class: Rain (1)
+|   |   |   |--- temparature_f_High >  0.50
+|   |   |   |   |--- dewpoint_f_Low <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- dewpoint_f_Low >  0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |--- dewpoint_f_Poor >  0.50
+|   |   |   |--- temparature_f_Medium <= 0.50
+|   |   |   |   |--- pressure_f_High <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- pressure_f_High >  0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |--- temparature_f_Medium >  0.50
+|   |   |   |   |--- pressure_f_Medium <= 0.50
+|   |   |   |   |   |--- class: No Rain (0)
+|   |   |   |   |--- pressure_f_Medium >  0.50
+|   |   |   |   |   |--- class: No Rain (0)
