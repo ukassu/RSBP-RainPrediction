@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 def fuzzify4(value, 
              poor_min, poor_max,
@@ -47,55 +48,70 @@ def fuzzy_dewpoint(x):
     return fuzzify4(x, 20.9, 24.0, 22.8, 25.0, 23.8, 26.3, 25.0, 26.8)
 
 
-rules = [
-    ("High","None","None","None","None","Rain"),
-    ("High","None","None","Medium","None","Rain"),
-    ("High","Medium","None","None","None","Rain"),
-    ("High","Medium","Medium","None","None","Rain"),
-    ("Medium","None","None","None","None","Rain"),
-    ("Medium","None","High","None","None","Rain"),
-    ("Medium","None","High","High","None","Rain"),
-    ("High","None","None","None","Poor","Rain"),
-    ("High","None","Poor","None","Poor","Rain"),
-    ("High","High","None","None","Poor","No Rain"),
-    ("Medium","None","None","None","Poor","Rain"),
-    ("Medium","Poor","None","None","Poor","Rain"),
-    ("Medium","None","Poor","None","Poor","Rain"),
-    ("Poor","None","None","None","None","No Rain"),
-    ("Poor","None","High","None","None","No Rain"),
-    ("Poor","None","None","High","None","Rain"),
-    ("Poor","None","Medium","High","None","Rain"),
-    ("Poor","Low","None","None","None","Rain"),
-    ("Poor","Low","None","Low","None","Rain"),
-    ("Poor","Low","Medium","Low","None","No Rain"),
-    ("Poor","None","None","None","Poor","No Rain"),
-    ("Poor","None","Poor","None","Poor","No Rain"),
-    ("Poor","Poor","None","None","Poor","Rain"),
-    ("Poor","Poor","Poor","None","Poor","Rain"),
-    ("Poor","High","None","None","Poor","No Rain"),
-    ("Poor","High","Poor","None","Poor","No Rain"),
-    ("Poor","High","Poor","Medium","Poor","No Rain"),
-]
+df_rules = pd.read_csv("rules.csv")
 
 
+def parse_condition(cond):
+    cond = str(cond).strip()
 
-def match_rules(h, t, p, w, d):
-    for rule in rules:
-        r_h, r_t, r_p, r_w, r_d, output = rule
+    if cond.upper() == "ANY":
+        return {"type": "any"}
 
-        def is_wildcard(r):
-            return isinstance(r, str) and r.strip().lower() == "none"
+    if cond.startswith("!="):
+        val = cond.replace("!=", "").strip()
+        return {"type": "not", "value": val}
 
-        cond = (
-            (is_wildcard(r_h) or r_h == h) and
-            (is_wildcard(r_t) or r_t == t) and
-            (is_wildcard(r_p) or r_p == p) and
-            (is_wildcard(r_w) or r_w == w) and
-            (is_wildcard(r_d) or r_d == d)
-        )
+    if "AND" in cond:
+        parts = [c.strip() for c in cond.split("AND")]
+        parsed_parts = []
+        for p in parts:
+            if p.startswith("!="):
+                parsed_parts.append({"type": "not", "value": p.replace("!=", "").strip()})
+            else:
+                parsed_parts.append({"type": "eq", "value": p})
+        return {"type": "and", "values": parsed_parts}
 
-        if cond:
-            return output
+    return {"type": "eq", "value": cond}
+
+
+def check_condition(rule_cond, fuzzy_value):
+    ctype = rule_cond["type"]
+
+    if ctype == "any":
+        return True
+
+    if ctype == "eq":
+        return fuzzy_value == rule_cond["value"]
+
+    if ctype == "not":
+        return fuzzy_value != rule_cond["value"]
+
+    if ctype == "and":
+        for sub in rule_cond["values"]:
+            if sub["type"] == "eq" and fuzzy_value != sub["value"]:
+                return False
+            if sub["type"] == "not" and fuzzy_value == sub["value"]:
+                return False
+        return True
+
+    return False
+
+
+def match_rules_from_csv(h, t, p, w, d):
+    for _, row in df_rules.iterrows():
+
+        cond_h = parse_condition(row["Humidity"])
+        cond_t = parse_condition(row["Temperature"])
+        cond_p = parse_condition(row["Pressure"])
+        cond_w = parse_condition(row["WindSpeed"])
+        cond_d = parse_condition(row["DewPoint"])
+
+        if (check_condition(cond_h, h) and
+            check_condition(cond_t, t) and
+            check_condition(cond_p, p) and
+            check_condition(cond_w, w) and
+            check_condition(cond_d, d)):
+            return row["Output"]
 
     return "No Rule Matched"
 
@@ -103,7 +119,7 @@ def match_rules(h, t, p, w, d):
 st.set_page_config(page_title="Fuzzy Weather Prediction", page_icon="⛅", layout="centered")
 
 st.title("⛅ Fuzzy Weather Prediction App")
-st.write("Masukkan nilai cuaca, lalu sistem fuzzy akan memprediksi apakah akan **hujan** atau **tidak**.")
+st.write("Masukkan nilai cuaca, lalu sistem fuzzy akan memprediksi **Rain / No Rain**.")
 
 st.subheader("Input Data")
 
@@ -127,12 +143,12 @@ if st.button("Prediksi Cuaca"):
     st.write(f"**Wind Speed**: {fw}")
     st.write(f"**Dew Point**: {fd}")
 
-    result = match_rules(fh, ft, fp, fw, fd)
+    result = match_rules_from_csv(fh, ft, fp, fw, fd)
 
     st.subheader("Hasil Prediksi")
     if result == "Rain":
         st.success("🌧️ **Rain**")
-    elif result == "No Rain":
-        st.info("☀️ **No Rain**")
-    else:
+    elif result == "No Rule Matched":
         st.warning("⚠️ Tidak ada rule yang cocok")
+    else:
+        st.info("☀️ **No Rain**")
