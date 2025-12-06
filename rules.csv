@@ -1,0 +1,30 @@
+RuleID,Humidity,Temperature,Pressure,WindSpeed,DewPoint,Output
+R1,!=Poor,ANY,!=Poor,!=High,ANY,Rain
+R2,!=Poor,ANY,High,!=High,ANY,Rain
+R3,Medium,ANY,!=High,!=High,ANY,Rain
+R4,Medium,ANY,Medium,!=High,ANY,Rain
+R5,!=Poor,ANY,Poor,!=Poor,!=High,Rain
+R6,!=Poor,High,Poor,!=High,!=Poor,Rain
+R7,!=Poor,Poor,Poor,!=High,Poor,Rain
+R8,Low,Low,ANY,High,!=Poor,Rain
+R9,Low,Low,ANY,High,Poor,Rain
+R10,Low,!=Low,!=Medium,High,ANY,Rain
+R11,Low,!=Low,Medium,High,ANY,Rain
+R12,Low,Poor,!=Poor,High,ANY,Rain
+R13,Low,!=Poor,!=Poor,High,ANY,Rain
+R14,Poor,!=High,!=Poor,!=High,ANY,No Rain
+R15,Poor,Low,!=Poor,!=High,ANY,No Rain
+R16,Poor,!=High,Poor,!=High,!=Medium,No Rain
+R17,Poor,!=High,Poor,!=High,Medium,Rain
+R18,Poor,High,ANY,!=High,!=Medium AND !=Poor,No Rain
+R19,Poor,High,ANY,!=High,Poor,No Rain
+R20,Poor,High,ANY,!=Medium,Medium,No Rain
+R21,Poor,High,ANY,Medium,Medium,No Rain
+R22,Poor,!=High AND !=Medium,ANY,High,!=Poor,Rain
+R23,Poor,Medium,ANY,High,!=Poor,Rain
+R24,Poor,!=Medium,!=High,High,Poor,No Rain
+R25,Poor,!=Medium,High,High,Poor,No Rain
+R26,Poor,Medium,!=Medium,High,Poor,No Rain
+R27,Poor,Medium,Medium,High,Poor,No Rain
+R28,Medium,ANY,Poor AND High,!=High,ANY,Rain
+R29,Poor,Low,Poor,!=High,ANY,No Rain
