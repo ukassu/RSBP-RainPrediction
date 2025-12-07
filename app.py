@@ -200,7 +200,7 @@ if st.button("🔍 Analisis Cuaca", type="primary"):
     idx, matched_rule = match_rules_from_csv(fh, ft, fp, fw, fd)
 
     st.divider()
-    st.subheader("Penjelasan Keputusan – Naratif")
+    st.subheader("Penjelasan Keputusan")
 
     if matched_rule is None:
         st.warning(
@@ -236,11 +236,8 @@ if st.button("🔍 Analisis Cuaca", type="primary"):
         f"dalam Rule #{idx} terpenuhi. Karena itu, sistem menyimpulkan bahwa kondisi cuaca Anda "
         f"paling mendekati pola yang menghasilkan: **{output}**.\n\n"
 
-        # "---\n"
-        # "📝 **Catatan**: Rule di dalam sistem berasal dari analisis dataset cuaca, di mana pola-pola "
-        # "tertentu membentuk aturan berbasis hubungan fuzzy. Dengan demikian, keputusan sistem "
-        # "bersifat *explainable*, bukan sekadar hasil hitungan matematis."
+        "---\n"
+        "📝 **Catatan**: Rule di dalam sistem berasal dari analisis cuaca, di mana pola-pola "
+        "tertentu membentuk aturan berbasis hubungan fuzzy. Dengan demikian, keputusan sistem "
+        "bersifat *explainable*, bukan sekadar hasil hitungan matematis."
     )
-
-    # with st.expander("Lihat Isi Rule yang Cocok"):
-    #     st.json(matched_rule.to_dict())
